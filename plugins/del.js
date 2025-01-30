@@ -46,6 +46,11 @@ async (conn, mek, m, {
       participant: quoted.sender // Expéditeur du message cité
     };
 
+    // Vérifier si l'utilisateur est administrateur ou propriétaire
+    if (!isAdmins && !isOwner) {
+      return await conn.sendMessage(from, { text: "❌ Only admins or the owner can delete messages." }, { quoted: m });
+    }
+
     // Supprimer le message si le bot ou l'owner l'a envoyé
     if (quoted.fromMe || sender === isOwner) {
       return await conn.sendMessage(from, { delete: key });
